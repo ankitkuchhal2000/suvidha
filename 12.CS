@@ -40,11 +40,15 @@ public class baseform:Form
         MenuItem mi4 = new MenuItem { Text = "&MISCELLANOUS" };
         MenuItem mi5 = new MenuItem { Text = "&HELP" };
 
+        MenuItem midb = new MenuItem { Text = "&DATABASE" };
+        midb.MenuItems.Add(new MenuItem("&BACKUP",new EventHandler(backup)));
+        midb.MenuItems.Add(new MenuItem("&COMPACT AND REPAIR",new EventHandler(compactrepair)));
+        midb.MenuItems.Add(new MenuItem("CHECK &STRUCTURE", new EventHandler(checkstructure)));
+
         mi3.MenuItems.Add(new MenuItem("&PARTY", new EventHandler(partysetup)));
         mi3.MenuItems.Add(new MenuItem ("&USER", new EventHandler(usersetup)));
 		mi3.MenuItems.Add(new MenuItem ("&CLIENT" , new EventHandler(clientsetup)));
-		mi3.MenuItems.Add(new MenuItem ("&DATABASE" , new EventHandler(databasesetup)));
-
+		mi3.MenuItems.Add(midb);
         mi5.MenuItems.Add(new MenuItem("&ABOUT", new EventHandler(about),Shortcut.F1));
 
         mm.MenuItems.Add(mi1);
@@ -65,13 +69,23 @@ public class baseform:Form
         viewer frm = new viewer(gv.frmtoopen.user) { MdiParent = this };
         frm.Show();
 	}
-    void databasesetup(object sender,EventArgs e)
+    void compactrepair(object sender,EventArgs e)
 	{
-        database frm = new database{ MdiParent = this};
-        frm.Show();
+        createdb createdb = new createdb();
+        createdb.backupdatabase();
+        createdb.compactandrepair(gv.connstr, gv.mdbfile);
 	}
-	
-	void clientsetup(object sennder , EventArgs e)
+    void checkstructure(object sender, EventArgs e)
+    {
+        createdb createdb = new createdb();
+        createdb.create();
+    }
+    void backup(object sender, EventArgs e)
+    {
+        createdb createdb = new createdb();
+        createdb.backupdatabase();
+    }
+    void clientsetup(object sennder , EventArgs e)
 	{
         Client frm = new Client( gv.mode.modify,1){ MdiParent = this};
         frm.Show();

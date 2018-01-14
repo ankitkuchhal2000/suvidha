@@ -8,11 +8,7 @@ using System.Diagnostics;
 public class Companylist:Form
 {
 	DataGridView dgv;
-	Button btn1;
-	Button btn2;
-	Button btn3;
-    Button btn4;
-    Button btn5;
+	Button btn1,btn2,btn3,btn4,btn5;
 	StatusBar sb;
 	StatusBarPanel sp1;
 	

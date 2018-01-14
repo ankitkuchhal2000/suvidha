@@ -18,7 +18,7 @@ public class inireader
 	private static extern long WritePrivateProfileString(string section, string key,string val, string filePath);
 	
 	string fname = "";
-	int size = 500;
+	int size = 50000;
 	public inireader(string filename)
 	{
 		fname = filename;

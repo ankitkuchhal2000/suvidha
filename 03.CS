@@ -17,8 +17,7 @@ public class gv //global variable class
 	public static OleDbCommand cmd = null;
     public static OleDbTransaction trans = null;
 	public static DataSet ds;
-	public static bool loginsuc = false;
-	public static bool authcopy = false;
+	public static bool loginsuc = false, authcopy = false;
     public static string sql = "", connstr = "", mdbfile = "", mdwfile = "", listfile = "", inifile = "",key = "NEWTON56";
 	public static string cipher ="", companyname = "Demo Company";
 	public static int billid = 0;

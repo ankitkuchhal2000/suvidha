@@ -1,6 +1,5 @@
 using System;
 using System.Windows.Forms;
-using System.Drawing;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
@@ -260,26 +259,7 @@ public class createdb
 	List<relation> relations;
 	List<table> tables;
     List<index> indexes;
-	public createdb()
-	{
-		Form frm = new Form();
-
-        lb = new ListBox{Parent = frm,Width=400,Height=300};
-
-        relations = new List<relation>();
-		tables = new List<table>();
-        indexes = new List<index>();
-		frm.Show();
-	}
-	public createdb(ListBox lbx)
-	{
-		lb = lbx;		
-		relations = new List<relation>();
-		tables = new List<table>();
-        indexes = new List<index>();
-	}
-
-    void structure()
+	void structure()
 
     {
         List<field> colfield = new List<field>
@@ -535,7 +515,14 @@ public class createdb
     }
     public void create()
 	{
-		structure();
+        Form frm = new Form();
+        lb = new ListBox { Parent = frm, Width = 500, Height = 270 };
+        frm.Show();
+        relations = new List<relation>();
+        tables = new List<table>();
+        indexes = new List<index>();
+
+        structure();
 		try
 		{	
 			lb.Items.Clear();
@@ -691,141 +678,82 @@ public class createdb
 			lb.Items.Add("Connection Closed!!");
 		}
 	}
-}
-
-public class database:Form
-{
-	ListBox lb1;
-	Button btn1;
-	Button btn2;
-	Button btn3;
-	
-	public database()
-	{	
-		WindowState = FormWindowState.Maximized;
-
-        lb1 = new ListBox
+    public void backupdatabase()
+    {
+        FileStream sfilestream = null;
+        FileStream dfileStream = null;
+        GZipStream stream = null;
+        string sfile = "";
+        string dfile = "";
+        try
         {
-            Width = 500,
-            Height = 270,
-            Parent = this
-        };
+            sfile = Application.StartupPath + "\\Backup\\" + DateTime.Now.DayOfWeek + ".bak";
+            dfile = sfile + ".gz";
 
-        btn1 = new Button
+            File.Copy(gv.mdbfile, sfile, true);
+            File.Delete(dfile);
+
+            sfilestream = File.OpenRead(sfile);
+            dfileStream = File.Create(dfile);
+            stream = new GZipStream(dfileStream, CompressionMode.Compress);
+            byte[] bytes = new byte[2048];
+            int bytesread;
+            while ((bytesread = sfilestream.Read(bytes, 0, bytes.Length)) != 0)
+            {
+                stream.Write(bytes, 0, bytesread);
+            }
+        }
+        catch (Exception ex)
         {
-            Text = "Compact and Repair",
-            Location = new Point(0, 300),
-            Parent = this
-        };
-        btn1.Click += new EventHandler(comclick);
-
-        btn2 = new Button
+            Debug.WriteLine(ex.Message);
+        }
+        finally
         {
-            Text = "Backup",
-            Location = new Point(0, 330),
-            Parent = this
-        };
-        btn2.Click += new EventHandler(bacclick);
+            sfilestream.Close();
+            stream.Close();
+            dfileStream.Close();
+            File.Delete(sfile);
+            MessageBox.Show("Backup Completed Successfully !!");
 
-        btn3 = new Button
-        {
-            Text = "Check Structure",
-            Location = new Point(0, 360),
-            Parent = this
-        };
-        btn3.Click += new EventHandler(checlick);
-
+        }
     }
-    void checlick(object sender,EventArgs e)
-	{
-		createdb cdb = new createdb(lb1);
-		cdb.create();
-	}
-	void bacclick(object sender,EventArgs e)
-	{
-		backupdatabase();
-	}
-	void comclick(object sender,EventArgs e)
-	{
-		backupdatabase();
-		compactandrepair(gv.connstr,gv.mdbfile);
-	}
-	void backupdatabase()
-	{
-		FileStream sfilestream = null;
-		FileStream dfileStream = null;
-		GZipStream stream = null;
-		string sfile = "";
-		string dfile = "";
-		try
-		{
-			sfile = Application.StartupPath + "\\Backup\\" + DateTime.Now.DayOfWeek + ".bak";
-			dfile = sfile + ".gz";
-			
-			File.Copy(gv.mdbfile,sfile,true);
-			File.Delete(dfile);
-			
-			sfilestream = File.OpenRead(sfile);
-			dfileStream = File.Create(dfile);
-			stream = new GZipStream(dfileStream,CompressionMode.Compress);
-			byte[] bytes = new byte[2048];
-			int bytesread ;
-			while((bytesread=sfilestream.Read(bytes,0,bytes.Length))!=0)
-			{
-				stream.Write(bytes,0,bytesread);
-			}
-		}
-		catch(Exception ex)
-		{
-			Debug.WriteLine(ex.Message);
-		}
-		finally
-		{
-			sfilestream.Close();
-			stream.Close();
-			dfileStream.Close();
-			File.Delete(sfile);
-			MessageBox.Show("Backup Completed Successfully !!");
-			
-		}
-	}
-	void restoredatabase()
-	{
-		///
-		///sample code
-		///
-		FileStream sourceFileStream = File.OpenRead("sitemap.xml.gz");
-		FileStream destFileStream = File.Create("sitemap.xml");
- 
-		GZipStream decompressingStream = new GZipStream(sourceFileStream, 
-		CompressionMode.Decompress);
-		int byteRead;
-		while((byteRead = decompressingStream.ReadByte()) != -1) 
-		{
-			destFileStream.WriteByte((byte)byteRead);
-		}
- 
-		decompressingStream.Close();
-		sourceFileStream.Close();
-		destFileStream.Close();
-	}
-	void compactandrepair(string connstring,string mdbfilename)
-	{
-		string compactdbstring="Provider = Microsoft.Jet.OLEDB.4.0 ; Jet OLEDB:Engine Type=5 ; Data Source = "+Application.StartupPath+"\\tempdb.mdb ";
-		// filling parameter array 
-		object[] oparams= new object[]{connstring,compactdbstring};
-		//create an instance of jet replication object
-		object objjro=Activator.CreateInstance(Type.GetTypeFromProgID("JRO.JetEngine"));
-		// invoking CompactDatabase method of jro object
-		objjro.GetType().InvokeMember("CompactDatabase",System.Reflection.BindingFlags.InvokeMethod,null,objjro,oparams);
-		//database is compacted now ,to a new file tempdb.mdb, now delete the old file and copy tempdb over mdb
-		File.Delete(mdbfilename);
-		File.Move(Application.StartupPath+"\\tempdb.mdb",mdbfilename);
-		
-		//clean the memory
-		System.Runtime.InteropServices.Marshal.ReleaseComObject(objjro);
-		objjro = null;
-		
-		MessageBox.Show("Database Compacted Successfully !!");
-	}
+    void restoredatabase()
+    {
+        ///
+        ///sample code
+        ///
+        FileStream sourceFileStream = File.OpenRead("sitemap.xml.gz");
+        FileStream destFileStream = File.Create("sitemap.xml");
+
+        GZipStream decompressingStream = new GZipStream(sourceFileStream,
+        CompressionMode.Decompress);
+        int byteRead;
+        while ((byteRead = decompressingStream.ReadByte()) != -1)
+        {
+            destFileStream.WriteByte((byte)byteRead);
+        }
+
+        decompressingStream.Close();
+        sourceFileStream.Close();
+        destFileStream.Close();
+    }
+    public void compactandrepair(string connstring, string mdbfilename)
+    {
+        string compactdbstring = "Provider = Microsoft.Jet.OLEDB.4.0 ; Jet OLEDB:Engine Type=5 ; Data Source = " + Application.StartupPath + "\\tempdb.mdb ";
+        // filling parameter array 
+        object[] oparams = new object[] { connstring, compactdbstring };
+        //create an instance of jet replication object
+        object objjro = Activator.CreateInstance(Type.GetTypeFromProgID("JRO.JetEngine"));
+        // invoking CompactDatabase method of jro object
+        objjro.GetType().InvokeMember("CompactDatabase", System.Reflection.BindingFlags.InvokeMethod, null, objjro, oparams);
+        //database is compacted now ,to a new file tempdb.mdb, now delete the old file and copy tempdb over mdb
+        File.Delete(mdbfilename);
+        File.Move(Application.StartupPath + "\\tempdb.mdb", mdbfilename);
+
+        //clean the memory
+        System.Runtime.InteropServices.Marshal.ReleaseComObject(objjro);
+        objjro = null;
+
+        MessageBox.Show("Database Compacted Successfully !!");
+    }
 }

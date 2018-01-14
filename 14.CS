@@ -8,8 +8,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 public class about:Form
 {
-	Label lbl1;
-	Label lbl2;
+	Label lbl1,lbl2;
 	
 	LinkLabel lkl1;
 	
@@ -41,10 +40,12 @@ public class about:Form
             Parent = this
         };
 
-        btn1 = new Button();
-		btn1.Text = "&Ok";
-		btn1.Location = new Point (200,260);
-		btn1.Parent = this;
+        btn1 = new Button
+        {
+            Text = "&Ok",
+            Location = new Point(200, 260),
+            Parent = this
+        };
         btn1.Click += new EventHandler(cloclick);
 
         lkl1 = new LinkLabel

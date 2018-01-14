@@ -8,70 +8,19 @@ using System.ComponentModel;
 
 public class party:Form
 {
-	int recstart = 0;
-	int reccount = 0;
+	int recstart = 0,reccount = 0;
 	int num = 0;
 	
 	ProgressBar pbr;	
 	BackgroundWorker bkw;
-	
-	Label lbl1;
-    Label lbl2;
-    Label lbl3;
-    Label lbl4;
-    Label lbl5;
-    Label lbl6;
-    Label lbl7;
-    Label lbl8;
-    Label lbl9;
-    Label lbl10;
-    Label lbl11;
-    Label lbl12;
-    Label lbl13;
-    Label lbl14;
-    Label lbl15;
-    Label lbl16;
-    Label lbl17;
-    Label lbl18;
-    Label lbl19;
-    Label lbl20;
 
-    Label lblpercent;
-	Label lblprogress;
-	
-	TextBox tb1;
-	TextBox tb2;
-    TextBox tb3;
-    TextBox tb4;
-    TextBox tb5;
-    TextBox tb6;
-    TextBox tb7;
-    TextBox tb8;
-    TextBox tb9;
-    TextBox tb10;
-    TextBox tb11;
-    TextBox tb12;
-    TextBox tb13;
-    TextBox tb14;
-    TextBox tb15;
-    TextBox tb16;
-    TextBox tb17;
-    TextBox tb18;
-    TextBox tb19;
-    TextBox tb20;
-    TextBox tbnum;
-	
-	Button btn1;
-	Button btn2;
-	Button btn3;
-	Button btn4;
-	Button btn5;
-	Button btn6;
-	Button btn7;
-	Button btn8;
-	Button btn9;
-	Button btn10;
-	Button btn11;
+    Label lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8, lbl9, lbl10,
+        lbl11, lbl12, lbl13, lbl14, lbl15, lbl16, lbl17, lbl18, lbl19, lbl20, lblpercent, lblprogress;
+
+    TextBox tb1, tb2, tb3, tb4, tb5, tb6, tb7, tb8, tb9, tb10,
+        tb11, tb12, tb13, tb14, tb15, tb16, tb17, tb18, tb19, tb20, tbnum;
+
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11;
 
     public party()
 	{

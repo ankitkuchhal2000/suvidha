@@ -11,11 +11,9 @@ using System.ComponentModel;
 public class login:Form
 {
 	int counter;
-	Label lbl1;
-	Label lbl2;
+	Label lbl1,lbl2;
 	
-	TextBox tb1;
-	TextBox tb2;
+	TextBox tb1,tb2;
 	
 	Button btn1;
 
@@ -56,10 +54,6 @@ public class login:Form
             Parent = this
         };
         btn1.Click += new EventHandler(logclick);
-
-        
-
-		
 	}
 	void fillform()
 	{

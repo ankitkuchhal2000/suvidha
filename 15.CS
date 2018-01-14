@@ -6,12 +6,9 @@ using System.Windows.Forms;
 
 class rangeinput: Form
 {
-    TextBox tb1;
-    TextBox tb2;
-    Label lb1;
-    Label lb2;
-    Button btn1;
-    Button btn2;
+    TextBox tb1, tb2;
+    Label lb1, lb2;
+    Button btn1, btn2;
     public string Start
     { get; set; }
     public string Stop
@@ -30,6 +27,7 @@ class rangeinput: Form
 
         btn1 = new Button { Text = "OK", Parent = this, Location = new Point(100, 60) };
         btn1.Click += new EventHandler(okclick);
+
         btn2 = new Button { Text = "CANCEL",Parent = this, Location = new Point(250, 60) };
         btn2.Click += new EventHandler(cancelclick);
     }

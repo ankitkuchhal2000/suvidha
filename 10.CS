@@ -10,10 +10,8 @@ using System.Security.Cryptography;
 using System.Text;
 
 public class registration:Form
-{	
-	Label lbl1;
-	Label lbl2;
-	Label lbl3;
+{
+    Label lbl1, lbl2, lbl3;
 
     TextBox tb1;
 

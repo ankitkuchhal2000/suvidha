@@ -10,16 +10,11 @@ using System.ComponentModel;
 
 public class user:Form
 {
+    Label lbl1,lbl2;
 	
+	TextBox tb1,tb2;
 	
-	Label lbl1;
-	Label lbl2;
-	
-	TextBox tb1;
-	TextBox tb2;
-	
-	Button btn1;
-	Button btn2;
+	Button btn1,btn2;
 
     gv.mode _mode;
     public gv.mode Mode
@@ -43,45 +38,18 @@ public class user:Form
         Mode = md;
         WindowState = FormWindowState.Maximized;
         Load += new EventHandler(load);
-        lbl1 = new Label
-        {
-            Location = new Point(0, 0),
-            Text = "User Name",
-            Parent = this
-        };
-        tb1 = new TextBox
-        {
-            Location = new Point(100, 0),
-            Parent = this
-        };
-        lbl2 = new Label
-        {
-            Location = new Point(0, 30),
-            Text = "Password",
-            Parent = this
-        };
-        tb2 = new TextBox
-        {
-            Location = new Point(100, 30),
-            Parent = this
-        };
+        lbl1 = new Label { Location = new Point(0, 0), Text = "User Name", Parent = this };
+        tb1 = new TextBox { Location = new Point(100, 0), Parent = this };
 
-        btn1 = new Button
-        {
-            Text = "SAVE",
-            Location = new Point(100, 180),
-            Parent = this
-        };
+        lbl2 = new Label { Location = new Point(0, 30), Text = "Password", Parent = this };
+        tb2 = new TextBox { Location = new Point(100, 30), Parent = this };
+
+        btn1 = new Button { Text = "SAVE", Location = new Point(100, 180), Parent = this };
         btn1.Click += new EventHandler(savclick);
 
-
-        btn2 = new Button
-        {
-            Text = "Delete",
-            Location = new Point(300, 180),
-            Parent = this
-        };
+        btn2 = new Button { Text = "Delete", Location = new Point(300, 180), Parent = this };
         btn2.Click += new EventHandler(delclick);
+
         if (Mode == gv.mode.modify || Mode == gv.mode.newentry)
         {
             btn1.Visible = true;
@@ -143,8 +111,7 @@ public class user:Form
     {
         try
         {
-            int recstart = 0;
-            int reccount = 0;
+            int recstart = 0, reccount = 0;
             gv.ds = new DataSet();
             gv.conn.Open();
             gv.sql = "select Max(id) as [Max],Min(id) as [Min] from users";

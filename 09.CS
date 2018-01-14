@@ -8,76 +8,23 @@ using System.Diagnostics;
 
 public class Client:Form
 {
-	
-	Label lbl1;
-	Label lbl2;
-	Label lbl3;
-	Label lbl4;
-	Label lbl5;
-	Label lbl6;
-	Label lbl7;
-	Label lbl8;
-	Label lbl9;
-	Label lbl10;
-	Label lbl11;
-	Label lbl12;
-	Label lbl13;
-	Label lbl14;
-	Label lbl15;
-	Label lbl16;
-	Label lbl17;
-	Label lbl18;
-	Label lbl19;
-	Label lbl20;
-	Label lbl21;
-	Label lbl22;
-	Label lbl23;
-	Label lbl24;
-	Label lbl25;
-	Label lbl26;
-	Label lbl27;
-	Label lbl28;
-	
-	TextBox tb1;
-	TextBox tb2;
-	TextBox tb3;
-	TextBox tb4;
-	TextBox tb5;
-	TextBox tb6;
-	TextBox tb7;
-	TextBox tb8;
-	TextBox tb9;
-	TextBox tb10;
-	TextBox tb11;
-	TextBox tb12;
-	TextBox tb13;
-	TextBox tb14;
-	TextBox tb15;
-	TextBox tb16;
-	TextBox tb17;
-	TextBox tb18;
-	TextBox tb19;
-	TextBox tb20;
-	TextBox tb21;
-	TextBox tb22;
-	TextBox tb23;
-	TextBox tb24;
-	TextBox tb25;
-	TextBox tb26;
-	
-	Button btn1;
-	Button btn2;
-	Button btn3;
-	Button btn4;
 
-	PictureBox pcb;
-	
-	DateTimePicker dtp1;
-	DateTimePicker dtp2;
+    Label lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8, lbl9, lbl10,
+        lbl11, lbl12, lbl13, lbl14, lbl15, lbl16, lbl17, lbl18, lbl19, lbl20,
+        lbl21, lbl22, lbl23, lbl24, lbl25, lbl26, lbl27, lbl28;
+
+    TextBox tb1, tb2, tb3, tb4, tb5, tb6, tb7, tb8, tb9, tb10,
+        tb11, tb12, tb13, tb14, tb15, tb16, tb17, tb18, tb19, tb20,
+        tb21, tb22, tb23, tb24, tb25, tb26;
+
+    Button btn1, btn2, btn3, btn4;
+
+    PictureBox pcb;
+
+    DateTimePicker dtp1, dtp2;
 	
 	StatusBar sb;
-	StatusBarPanel sp1;
-	StatusBarPanel sp2;
+    StatusBarPanel sp1, sp2;
 
     gv.mode _mode;
     public gv.mode Mode
@@ -202,9 +149,6 @@ public class Client:Form
         btn4 = new Button { Text = "Report", Location = new Point(260, 1080), Parent = this };
         btn4.Click += new EventHandler(repclick);
 
-        
-
-        
         sp1 = new StatusBarPanel { AutoSize = StatusBarPanelAutoSize.Spring, Text = gv.listfile };
         sp2 = new StatusBarPanel { AutoSize = StatusBarPanelAutoSize.Spring, Text = gv.mdbfile };
 

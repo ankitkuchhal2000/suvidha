@@ -12,8 +12,7 @@ public class searchbox
 	static TextBox tb1;
 	static RadioButton[] radb;
 	static DataGridView dgv;
-	static Button btn1;
-	static Button btn2;
+	static Button btn1,btn2;
 	
 	static BindingSource bs;
 

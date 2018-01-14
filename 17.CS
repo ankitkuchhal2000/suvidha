@@ -27,16 +27,10 @@ class viewer : Form
     }
     Form frm;
     DataGridView dgv;
-    ToolStripStatusLabel ssl1;
-    ToolStripStatusLabel ssl2;
+    ToolStripStatusLabel ssl1,ssl2;
     StatusStrip ss;
 
-    Button btn1;
-    Button btn2;
-    Button btn3;
-    Button btn4;
-    Button btn5;
-    Button btn6;
+    Button btn1, btn2, btn3, btn4, btn5, btn6;
 
     public viewer(gv.frmtoopen form)
     {
