@@ -1,0 +1,13 @@
+@P          E NATHU RAM CHETAN SARUPF           
+M------------------------------------------------
+DATE 14/12/2016 AT 15:28:10         BILL NO:1
+------------------------------------------------
+SN.DESCRIPTION               QTY    RATE  AMOUNT
+------------------------------------------------
+  1MOONG DHULI 1KG         1.000  100.00  100.00
+------------------------------------------------
+VAT TAX INCLUDED.           TOTAL AMOUNT  100.00
+                           INVOICE VALUEG  100.00H
+RUPEES ONE HUNDRED ONLY.
+VAT 12.5%   11.05SURCHARGE    0.55AMOUNT   88.40
+V

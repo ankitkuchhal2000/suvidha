@@ -1,0 +1,15 @@
+D:\suvidha\obj\Debug\suvidha.csprojResolveAssemblyReference.cache
+D:\suvidha\obj\Debug\suvidha.csproj.GenerateResource.Cache
+D:\suvidha\Debug\suvidha.exe.config
+D:\suvidha\Debug\suvidha.exe
+D:\suvidha\Debug\suvidha.pdb
+D:\suvidha\Debug\adox.dll
+D:\suvidha\Debug\CrystalDecisions.CrystalReports.Engine.dll
+D:\suvidha\Debug\CrystalDecisions.Shared.dll
+D:\suvidha\Debug\CrystalDecisions.Windows.Forms.dll
+D:\suvidha\Debug\CrystalDecisions.ReportSource.dll
+D:\suvidha\Debug\stdole.dll
+D:\suvidha\obj\Debug\suvidha.Properties.Resources.resources
+D:\suvidha\obj\Debug\suvidha.csproj.CoreCompileInputs.cache
+D:\suvidha\obj\Debug\suvidha.exe
+D:\suvidha\obj\Debug\suvidha.pdb
