@@ -18,239 +18,146 @@ public class item:Form
 	int purchaseacnum=0;
 	
 	
-	MainMenu mm;
-	
+	MainMenu mm;	
 	ErrorProvider err;	
-	
-	ProgressBar pbr;
-	
+	ProgressBar pbr;	
 	BackgroundWorker bkw;
-
 	PictureBox pcb;
-	
-	
-
 	inireader ir = new inireader(gv.inifile);	
 	
-	Label lbl1;
-	Label lbl2;
-	Label lbl3;
-	Label lbl4;
-	Label lbl5;
-	Label lbl6;
-	Label lbl7;
-	Label lbl8;
-	Label lbl9;
-	Label lbl10;
-	Label lbl12;
-	Label lbl13;
-	
-	TextBox tb1;
-	TextBox tb2;
-	TextBox tb3;
-	TextBox tb4;
-	TextBox tb5;
-	TextBox tb6;
-	
-	Button btn1;
-	Button btn2;
-	Button btn3;
-	Button btn4;
-	Button btn5;
-	Button btn6;
-	Button btn7;
-	Button btn8;
-	Button btn9;
-	Button btn10;
+	Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,
+        lbl11,lbl12;
+	TextBox tb1,tb2,tb3,tb4,tb5,tb6;
+	Button btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn10;
 	
 	public item(int icode)
 	{
 		
-		MenuItem mi1 = new MenuItem("&Item Menu");
-		mi1.MenuItems.Add(new MenuItem("&Import",new EventHandler(impclick)));
-		mi1.MenuItems.Add(new MenuItem("&Cancel Import",new EventHandler(canimpclick)));
-		
-		mm = new MainMenu();
-		mm.MenuItems.Add(mi1);
-		
-		Menu = mm;
 		Size = new Size(500,300);
 		WindowState = FormWindowState.Maximized;
 
-        lbl1 = new Label{
-            Text = "Item Name",
-            Location = new Point(0, 0),
+        lbl1 = new Label{Text = "Item Name",Location = new Point(0, 0),Parent = this};
+        tb1 = new TextBox { Location = new Point(100, 0), Width = 300, Parent = this };
+
+        lbl2 = new Label { Text = "Bar Code", Location = new Point(0, 30), Parent = this };
+        tb2 = new TextBox { Location = new Point(100, 30), Parent = this };
+
+        lbl3 = new Label { Location = new Point(200, 30), Text = "Bar Code Image", Parent = this };
+        pcb = new PictureBox { Location = new Point(300, 30), Height = 15, Parent = this };
+
+        lbl4 = new Label
+        {
+            Text = "Sale A/c",
+            Location = new Point(0, 60),
             Parent = this
         };
 
-        tb1 = new TextBox
+        lbl5 = new Label
         {
-            Location = new Point(100, 0),
+            Text = "",
+            Location = new Point(100, 60),
             Width = 300,
             Parent = this
         };
-        tb1.Validating += new CancelEventHandler(tb1validating);
-		tb1.Validated += new EventHandler(tb1validated);
-		
-		err = new ErrorProvider();		
-		
-		lbl2 = new Label();
-		lbl2.Text = "Bar Code";
-		lbl2.Location = new Point(0,30);
-		lbl2.Parent = this;
 
-		
-		tb2 = new TextBox();
-		tb2.Location = new Point(100,30);
-		tb2.Parent = this;
-	
-		lbl3 = new Label();
-		lbl3.Location = new Point(200,30);
-		lbl3.Text = "Bar Code Image";
-		lbl3.Parent = this;
-		
-		pcb =  new PictureBox();
-		pcb.Location = new Point(300,30);
-		pcb.Height = 15;
-		pcb.Parent = this;
-			
-		lbl4 = new Label();
-		lbl4.Text = "Sale A/c";
-		lbl4.Location = new Point(0,60);
-		lbl4.Parent = this;
-		
-		lbl5 = new Label();
-		lbl5.Text = "";
-		lbl5.Location = new Point(100,60);
-		lbl5.Width = 300;
-		lbl5.Parent = this;
-		
-		btn1 = new Button();
-		btn1.Text = "Select Sale A/C";
-		btn1.Location = new Point(400,60);
-		btn1.Width = 125;
-		btn1.Click += new EventHandler(selsalclick);
-		btn1.Parent = this;
-		
-		lbl6 = new Label();
-		lbl6.Text = "Purchase A/C";
-		lbl6.Location = new Point(0,90);
-		lbl6.Parent = this;
-		
-		lbl7 = new Label();
-		lbl7.Text = "";
-		lbl7.Location = new Point(100,90);
-		lbl7.Width = 300;
-		lbl7.Parent = this;
-		
-		btn2 = new Button();
-		btn2.Text = "Select Purchase A/C";
-		btn2.Location = new Point(400,90);
-		btn2.Width = 125;
-		btn2.Click += new EventHandler(selpurclick);
-		btn2.Parent = this;
-		
-		lbl8 = new Label();
-		lbl8.Location = new Point(0,120);
-		lbl8.Text = "Purchase Price";
-		lbl8.Parent = this;
-		
-		tb3 = new TextBox();
-		tb3.Location = new Point(100,120);
-		tb3.Parent = this;
-		
-		lbl9 = new Label();
-		lbl9.Location = new Point(0,150);
-		lbl9.Text = "Sale Price";
-		lbl9.Parent = this;
-		
-		tb4 = new TextBox();
-		tb4.Location = new Point(100,150);
-		tb4.Parent = this;
-		
-		lbl10 = new Label();
-		lbl10.Location = new Point(0,180);
-		lbl10.Text = "MRP";
-		lbl10.Parent = this;
-		
-		tb5 = new TextBox();
-		tb5.Location = new Point(100,180);
-		tb5.Parent = this;
-		
-		btn3 = new Button();
-		btn3.Text = "First";
-		btn3.Location = new Point(0,210);
-		btn3.Click += new EventHandler(firclick);
-		btn3.Parent = this;
-		
-		btn4 = new Button();
-		btn4.Text = "Previous";
-		btn4.Location = new Point(100,210);
-		btn4.Click += new EventHandler(preclick);
-		btn4.Parent = this;
-		
-		tb6 = new TextBox();
-		tb6.Location = new Point(200,210);
-		tb6.Width = 75;
-		tb6.Parent = this;
-		
-		btn5 = new Button();
-		btn5.Text = "Next";
-		btn5.Location = new Point(300,210);
-		btn5.Click += new EventHandler(nexclick);
-		btn5.Parent = this;		
-		
-		btn6 = new Button();
-		btn6.Text = "Last";
-		btn6.Location = new Point(400,210);
-		btn6.Click += new EventHandler(lasclick);
-		btn6.Parent = this;
-		
+        btn1 = new Button
+        {
+            Text = "Select Sale A/C",
+            Location = new Point(400, 60),
+            Width = 125,
+            Parent = this
+        };
+        btn1.Click += new EventHandler(selsalclick);
+
+        lbl6 = new Label
+        {
+            Text = "Purchase A/C",
+            Location = new Point(0, 90),
+            Parent = this
+        };
+
+        lbl7 = new Label
+        {
+            Text = "",
+            Location = new Point(100, 90),
+            Width = 300,
+            Parent = this
+        };
+
+        btn2 = new Button
+        {
+            Text = "Select Purchase A/C",
+            Location = new Point(400, 90),
+            Width = 125,
+            Parent = this
+        };
+        btn2.Click += new EventHandler(selpurclick);
+
+        lbl8 = new Label
+        {
+            Location = new Point(0, 120),
+            Text = "Purchase Price",
+            Parent = this
+        };
+
+        tb3 = new TextBox
+        {
+            Location = new Point(100, 120),
+            Parent = this
+        };
+
+        lbl9 = new Label
+        {
+            Location = new Point(0, 150),
+            Text = "Sale Price",
+            Parent = this
+        };
+
+        tb4 = new TextBox
+        {
+            Location = new Point(100, 150),
+            Parent = this
+        };
+
+        lbl10 = new Label
+        {
+            Location = new Point(0, 180),
+            Text = "MRP",
+            Parent = this
+        };
+
+        tb5 = new TextBox
+        {
+            Location = new Point(100, 180),
+            Parent = this
+        };
+
+        
 		btn7 = new Button();
 		btn7.Text = "Insert";
 		btn7.Location = new Point(100,240);
-		btn7.Click += new EventHandler(insclick);
 		btn7.Parent = this;
-		
-		btn8 = new Button();
+		btn7.Click += new EventHandler(insclick);
+
+        btn8 = new Button();
 		btn8.Text = "Update";
 		btn8.Location = new Point(200,240);
-		btn8.Click += new EventHandler(updclick);
 		btn8.Parent = this;
-		
-		btn9 = new Button();
+        btn8.Click += new EventHandler(updclick);
+
+        btn9 = new Button();
 		btn9.Text = "Delete";
 		btn9.Location = new Point(300,240);
-		btn9.Click += new EventHandler(delclick);
 		btn9.Parent = this;
+        btn9.Click += new EventHandler(delclick);
 
-		btn10 = new Button();
+        btn10 = new Button();
 		btn10.Text = "New";
 		btn10.Location = new Point(200,270);
-		btn10.Click += new EventHandler(newclick);
-		btn10.Parent = this;		
-		
-		pbr = new ProgressBar();
-		pbr.Visible = false;
-		pbr.Location = new Point(0,300);
-		pbr.Width = 475;
-		pbr.Parent = this;
-		
-		lbl12 = new Label();
-		lbl12.Location = new Point(200,330);
-		lbl12.Parent = this;
-		
-		lbl13 = new Label();
-		lbl13.Location = new Point(200,360);
-		lbl13.Parent = this;
-		
-		bkw = new BackgroundWorker();
-		bkw.WorkerReportsProgress = true;
-		bkw.DoWork += new DoWorkEventHandler(dowork);
-		bkw.ProgressChanged += new ProgressChangedEventHandler(progresschanged);
-		bkw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(workcompleted);
+		btn10.Parent = this;
+        btn10.Click += new EventHandler(newclick);
 
-		recstartstop();
+        recstartstop();
 		num = reccount;
 		num++;
 		if(icode>0)
@@ -609,11 +516,11 @@ public class item:Form
 			{
 				i++;
 				bkw.ReportProgress(i);
-				lbl13.Text = dr["ITEMNAME"].ToString().Replace("'","''");
+				lbl12.Text = dr["ITEMNAME"].ToString().Replace("'","''");
 				gv.sql = "insert into item (id, itemname, "+
 				"barcode, saleac, "+
 				"purchaseac) values(" + 
-				dr["ITEMCODE"] + ", '" + lbl13.Text + "', '"+
+				dr["ITEMCODE"] + ", '" + lbl12.Text + "', '"+
 				dr["ITEMCODE"].ToString().PadLeft(5,'0')+"', '"+saleacnum+"', '"+
 				purchaseacnum+"')";
 				Debug.WriteLine(gv.sql);
@@ -641,7 +548,7 @@ public class item:Form
 	void progresschanged(object sender , ProgressChangedEventArgs e)
 	{
 		pbr.Value = e.ProgressPercentage;
-		lbl12.Text = pbr.Value+"/"+pbr.Maximum;
+		lbl11.Text = pbr.Value+"/"+pbr.Maximum;
 	}
 	void workcompleted(object sender , RunWorkerCompletedEventArgs e)
 	{
@@ -651,18 +558,18 @@ public class item:Form
 		}
 		else if (e.Cancelled)
 		{
-			lbl13.Text = "Cancelled";
+			lbl12.Text = "Cancelled";
 			Debug.WriteLine("Cancelled");
 		}
 		else
 		{
-			lbl13.Text = e.Result.ToString();
+			lbl12.Text = e.Result.ToString();
 			Debug.WriteLine(e.Result.ToString());
 		}
 		pbr.Visible = false;
 		System.Threading.Thread.Sleep(100);
+		lbl11.Text="";
 		lbl12.Text="";
-		lbl13.Text="";
 	}
 	void priclick(object sender , EventArgs e)
 	{ 

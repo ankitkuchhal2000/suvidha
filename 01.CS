@@ -442,7 +442,7 @@ public class createdb
 
         colfield = new List<field>
         {
-            new field { Name= "claimid", Type= "Number" },
+            new field{ Name= "claimid", Type= "Number" },
             new field{ Name="itemid", Type= "Number" },
             new field{ Name=  "quantity", Type= "Number" },
             new field{ Name="rate", Type= "Number" },
@@ -491,7 +491,7 @@ public class createdb
         };
         tables.Add(new table { Name = "rojnamcha", Fields = colfield });
 
-        indexes.Add(new index { Name = "ITEMBIDX" });
+        indexes.Add(new index { Name = "ITEMBIDX", Table = "itemb ", Field="(id,itemid)", WithPrimary = true });
 
         relations.Add(new relation { Name = "fkbillnumbillid", Table = "billnum", ForeignKey = "billid", ReferenceTable = "bill", ReferenceKey = "id" });
         relations.Add(new relation { Name = "fkinvoicebillbookid", Table = "invoice", ForeignKey = "billbookid", ReferenceTable = "billnum", ReferenceKey = "id" });

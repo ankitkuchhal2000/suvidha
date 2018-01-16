@@ -8,25 +8,44 @@ using System.ComponentModel;
 
 public class party:Form
 {
-	int recstart = 0,reccount = 0;
-	int num = 0;
-	
 	ProgressBar pbr;	
 	BackgroundWorker bkw;
 
     Label lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8, lbl9, lbl10,
-        lbl11, lbl12, lbl13, lbl14, lbl15, lbl16, lbl17, lbl18, lbl19, lbl20, lblpercent, lblprogress;
+        lbl11, lbl12, lbl13, lbl14, lbl15, lbl16, lbl17, lbl18, lbl19, lbl20,lbl21, lblpercent, lblprogress;
 
     TextBox tb1, tb2, tb3, tb4, tb5, tb6, tb7, tb8, tb9, tb10,
-        tb11, tb12, tb13, tb14, tb15, tb16, tb17, tb18, tb19, tb20, tbnum;
+        tb11, tb12, tb13, tb14, tb15, tb16, tb17, tb18, tb19, tb20, tb21;
 
-    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11;
+    Button btn1, btn2;
 
-    public party()
+    gv.mode _mode;
+    public gv.mode Mode
+    {
+        get
+        {
+            return _mode;
+        }
+        set
+        {
+            _mode = value;
+        }
+    }
+
+    public int Num
+    {
+        get; set;
+    }
+    int groupnumber;
+    public party(gv.mode md, int num)
 	{
-		Size = new Size(500,500);
+        Num = num;
+        Mode = md;
+
+        Size = new Size(500,500);
         AutoScroll = true;
         WindowState = FormWindowState.Maximized;
+        Load += new EventHandler(load);
 
         lbl1 = new Label{ Text = "Party Name", Location = new Point(0, 0), Parent = this };
         tb1 = new TextBox{ Location = new Point(100, 0), Width = 300, Parent = this };
@@ -79,49 +98,18 @@ public class party:Form
         lbl17 = new Label { Text = "VAT Number", Location = new Point(0, 450), Parent = this };
         tb17 = new TextBox { Location = new Point(100, 450), Width = 300, Parent = this };
 
-        lbl18 = new Label { Text = "Drug Lic. Number 20B", Location = new Point(0, 480), Parent = this };
+        lbl18 = new Label { Text = "GST Number", Location = new Point(0, 480), Parent = this };
         tb18 = new TextBox { Location = new Point(100, 480), Width = 300, Parent = this };
 
-        lbl19 = new Label { Text = "Drug Lic. Number 21B", Location = new Point(0, 510), Parent = this };
-        tb19 = new TextBox { Location = new Point(100, 510), Width = 300,  Parent = this };
+        lbl19 = new Label { Text = "Drug Lic. Number 20B", Location = new Point(0, 510), Parent = this };
+        tb19 = new TextBox { Location = new Point(100, 510), Width = 300, Parent = this };
 
-        lbl20 = new Label { Text = "State Code", Location = new Point(0, 540), Parent = this };
-        tb20 = new TextBox { Location = new Point(100, 540), Width = 300, Parent = this };
+        lbl20 = new Label { Text = "Drug Lic. Number 21B", Location = new Point(0, 540), Parent = this };
+        tb20 = new TextBox { Location = new Point(100, 540), Width = 300,  Parent = this };
 
-        btn1 = new Button{Text = "First",Location = new Point(0, 630),Parent = this};
-        btn1.Click += new EventHandler(firclick);
-
-        btn2 = new Button{Text = "Previous",Location = new Point(100, 630),Parent = this};
-        btn2.Click += new EventHandler(preclick);
-
-        tbnum = new TextBox{ Location = new Point(200, 630), Width = 75, Parent = this };
-
-        btn3 = new Button { Text = "Next", Location = new Point(300, 630), Parent = this };
-        btn3.Click += new EventHandler(nexclick);
-
-        btn4 = new Button {Text = "Last",Location = new Point(400, 630), Parent = this};
-        btn4.Click += new EventHandler(lasclick);
-
-        btn5 = new Button { Text = "Insert", Location = new Point(100, 660), Parent = this };
-        btn5.Click += new EventHandler(insclick);
-
-        btn6 = new Button{ Text = "Update", Location = new Point(200, 660), Parent = this };
-        btn6.Click += new EventHandler(updclick);
-
-        btn7 = new Button { Text = "Delete", Location = new Point(300, 660), Parent = this };
-        btn7.Click += new EventHandler(delclick);
-
-        btn8 = new Button { Text = "New", Location = new Point(200, 690), Parent = this };
-        btn8.Click += new EventHandler(newclick);
-		
-        btn9 = new Button { Text = "Import", Location = new Point(300, 690), Parent = this };
-        btn9.Click += new EventHandler(impclick);
-
-        btn10 = new Button { Text = "Cancel Import", Location = new Point(400, 690), Parent = this };
-        btn10.Click += new EventHandler(canimpclick);
-
-        btn11 = new Button { Text = "Report", Location = new Point(500, 690), Parent = this };
-
+        lbl21 = new Label { Text = "State Code", Location = new Point(0, 570), Parent = this };
+        tb21 = new TextBox { Location = new Point(100, 570), Width = 300, Parent = this };
+        
         pbr = new ProgressBar{ Visible = false, Location = new Point(0, 720), Width = 475, Parent = this };
 
         lblpercent = new Label{ Location = new Point(200, 750), Parent = this };
@@ -133,85 +121,73 @@ public class party:Form
 		bkw.ProgressChanged += new ProgressChangedEventHandler(progresschanged);
 		bkw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(workcompleted);
 
-		recstartstop();
-		num = reccount;
-		num++;
-		tbnum.Text=num+" of "+reccount;
-		fillform();
+        btn1 = new Button { Text = "SAVE", Location = new Point(0, 630), Parent = this };
+        btn1.Click += new EventHandler(savclick);
+
+        btn2 = new Button { Text = "DELETE", Location = new Point(100, 630), Parent = this };
+        btn2.Click += new EventHandler(delclick);
+
+        if (Mode == gv.mode.modify || Mode == gv.mode.newentry)
+        {
+            btn1.Visible = true;
+            btn2.Visible = false;
+        }
+        if (Mode == gv.mode.delete)
+        {
+            btn1.Visible = false;
+            btn2.Visible = true;
+        }
 	}
-	void recstartstop()
-	{
-		try
-		{
-			gv.conn.Open();
-			gv.ds = new DataSet();
-			gv.sql = "select Max(id) as [Max],Min(id) as [Min] from party";
-			Debug.WriteLine(gv.sql);
-			gv.adap = new OleDbDataAdapter(gv.sql,gv.conn);
-			gv.adap.Fill(gv.ds,"id");
-			if(gv.ds.Tables[0].Rows.Count>0)
-			{
-				if(gv.ds.Tables[0].Rows[0]["Min"].GetType() != typeof(DBNull))
-					recstart = Convert.ToInt32(gv.ds.Tables[0].Rows[0]["Min"]);
-				if(gv.ds.Tables[0].Rows[0]["Max"].GetType() != typeof(DBNull))
-					reccount = Convert.ToInt32(gv.ds.Tables[0].Rows[0]["Max"]);
-			}
-		}
-		catch(Exception ex)
-		{
-			Debug.WriteLine(ex.Message);
-		}
-		finally
-		{
-			gv.conn.Close();
-		}
-	}
-	void fillform()
-	{
-		try
-		{
-			gv.conn.Open();
-			gv.ds = new DataSet();
-			gv.sql = "select partyname as [Party Name], "+
-                "address as [Address], address1 as [Address1], "+
-                "station as [Station], phone1 as [Phone1], "+
-                "phone2 as[Phone2], phone3 as [Phone3], "+
-                "phone4 as[Phone4], phone5 as [Phone5], "+
+    void load (object sender, EventArgs e)
+    {
+        select();
+    }
+    void delclick(object sender, EventArgs e)
+    {
+
+        delete();
+        Close();
+    }
+
+    void savclick(object sender, EventArgs e)
+    {
+        if (Mode == gv.mode.newentry)
+        {
+            insert();
+            Close();
+        }
+        if (Mode == gv.mode.modify)
+        {
+            update();
+            Close();
+        }
+    }
+    void select()
+    {
+        try
+        {
+            gv.conn.Open();
+            gv.ds = new DataSet();
+            gv.sql = "select partyname as [Party Name], " +
+                "address as [Address], address1 as [Address1], " +
+                "station as [Station], phone1 as [Phone1], " +
+                "phone2 as[Phone2], phone3 as [Phone3], " +
+                "phone4 as[Phone4], phone5 as [Phone5], " +
                 "phone6 as[Phone6], email as [Email], " +
-                "email1 as[Email1],email2 as [Email2], "+
+                "email1 as[Email1],email2 as [Email2], " +
                 "contactperson as[Contact Person], designation as [Designation], " +
-                "stcstno as[STCST Number], vatnumber as [VAT Number], "+
-                "dlno20b as[DLNO20B] ,dlno21b as [DLNO21B], "+
-                "statecode as[State Code] "+
+                "stcstno as[STCST Number], vatnumber as [VAT Number], " +
+                "dlno20b as[DLNO20B] ,dlno21b as [DLNO21B], " +
+                "statecode as[State Code] " +
                 "from party " +
-                "where party.id = " + num;
-			Debug.WriteLine(gv.sql);
-			gv.adap = new OleDbDataAdapter(gv.sql,gv.conn);
-			gv.adap.Fill(gv.ds,"party");
-			
-			tb1.Text="";
-			tb2.Text="";
-			tb3.Text="";
-			tb4.Text="";
-			tb5.Text="";
-			tb6.Text="";
-			tb7.Text="";
-			tb8.Text="";
-			tb9.Text="";
-			tb10.Text="";
-			tb11.Text="";
-			tb12.Text="";
-			tb13.Text="";
-			tb14.Text="";
-			tb15.Text="";
-			tb16.Text="";
-			tb17.Text="";
-            tb18.Text="";
-            tb19.Text="";
-            tb20.Text="";
-			if(gv.ds.Tables[0].Rows.Count>0)
-			{
-				tb1.Text = gv.ds.Tables[0].Rows[0]["Party Name"].ToString();
+                "where party.id = " + Num;
+            Debug.WriteLine(gv.sql);
+            gv.adap = new OleDbDataAdapter(gv.sql, gv.conn);
+            gv.adap.Fill(gv.ds, "party");
+
+            if (gv.ds.Tables[0].Rows.Count > 0)
+            {
+                tb1.Text = gv.ds.Tables[0].Rows[0]["Party Name"].ToString();
                 tb2.Text = gv.ds.Tables[0].Rows[0]["Address"].ToString();
                 tb3.Text = gv.ds.Tables[0].Rows[0]["Address1"].ToString();
                 tb4.Text = gv.ds.Tables[0].Rows[0]["Station"].ToString();
@@ -232,25 +208,53 @@ public class party:Form
                 tb19.Text = gv.ds.Tables[0].Rows[0]["DLNO21B"].ToString();
                 tb20.Text = gv.ds.Tables[0].Rows[0]["State Code"].ToString();
             }
-		}
-		catch(Exception ex)
-		{
-			Debug.WriteLine(ex.Message);
-		}
-		finally
-		{
-			gv.conn.Close();
-		}
-	}
-    void delclick(object sender, EventArgs e)
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+        finally
+        {
+            gv.conn.Close();
+        }
+    }
+    void selectid()
+    {
+        try
+        {
+            int recstart = 0, reccount = 0;
+            gv.conn.Open();
+            gv.ds = new DataSet();
+            gv.sql = "select Max(id) as [Max],Min(id) as [Min] from party";
+            Debug.WriteLine(gv.sql);
+            gv.adap = new OleDbDataAdapter(gv.sql, gv.conn);
+            gv.adap.Fill(gv.ds, "id");
+            if (gv.ds.Tables[0].Rows.Count > 0)
+            {
+                if (gv.ds.Tables[0].Rows[0]["Min"].GetType() != typeof(DBNull))
+                    recstart = Convert.ToInt32(gv.ds.Tables[0].Rows[0]["Min"]);
+                if (gv.ds.Tables[0].Rows[0]["Max"].GetType() != typeof(DBNull))
+                    reccount = Convert.ToInt32(gv.ds.Tables[0].Rows[0]["Max"]);
+                Num = reccount;
+                Num++;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+        finally
+        {
+            gv.conn.Close();
+        }
+    }
+    void delete()
     {
         try
         {
             gv.conn.Open();
-            gv.ds = new DataSet();
-            gv.sql = "delete from  party where  id = " + num;
+            gv.sql = "delete from  party where  id = " + Num;
             Debug.WriteLine(gv.sql);
-            gv.adap = new OleDbDataAdapter();
             gv.adap.DeleteCommand = new OleDbCommand(gv.sql, gv.conn);
             gv.adap.DeleteCommand.ExecuteNonQuery();
         }
@@ -262,47 +266,37 @@ public class party:Form
         {
             gv.conn.Close();
         }
-        recstartstop();
-        num = reccount;
-        tbnum.Text = num + " of " + reccount;
-        fillform();
     }
-
-    void updclick(object sender, EventArgs e)
+    void update()
     {
         try
         {
             gv.conn.Open();
-            gv.ds = new DataSet();
-            gv.sql = "select id as [ID] from party where partyname = '" + tb1.Text + "'";
+            gv.sql = "update party set partyname = @partyname, address=@address, address1=@address1, station=@station ,phone1=@phone1, phone2=@phone2, phone3=@phone3, phone4=@phone4, phone5=@phone5, phone6=@phone6, email=@email, email1=@email1, email2=@email2, contactperson=@contactperson, designation=@designation, stcstno=@stcstno, vatnumber=@vatnumber,gstnumber@gstnumber, dlno20b=@dlno20b, dlno21b=@dlno21b, statecode=@statecode where id = @id";
             Debug.WriteLine(gv.sql);
-            gv.adap = new OleDbDataAdapter(gv.sql, gv.conn);
-            gv.adap.Fill(gv.ds, "id");
-            if (gv.ds.Tables[0].Rows.Count > 0)
-            {
-                int id = 0;
-                if (gv.ds.Tables[0].Rows[0]["ID"].GetType() != typeof(DBNull))
-                    id = Convert.ToInt32(gv.ds.Tables[0].Rows[0]["ID"]);
-                if (id != 0 && id != num)
-                {
-                    MessageBox.Show("Party already exits");
-                    return;
-                }
-            }
-            gv.sql = "update party set partyname = '" + tb1.Text + "', address='"+tb2.Text +"', "+
-                "address1='"+tb3.Text+"', station='"+tb4.Text+"' ,"+
-                "phone1='"+tb5.Text+"', phone2='"+tb6.Text+"', "+
-                "phone3='"+tb7.Text+"', phone4='"+tb8.Text+"', "+
-                "phone5='"+tb9.Text+"', phone6='"+tb10.Text+"', "+
-                "email='"+tb11.Text+"', email1='"+tb12.Text+"', "+
-                "email2='"+tb13.Text+"', contactperson='"+tb14.Text+"', "+
-                "designation='"+tb15.Text+"', stcstno='"+tb16.Text+"', "+
-                "vatnumber='"+tb17.Text+"', dlno20b='"+tb18.Text+"', "+
-                "dlno21b='"+tb19.Text+"', statecode='"+tb20.Text+"' "+
-                "where id = " + num;
-            Debug.WriteLine(gv.sql);
-            gv.adap = new OleDbDataAdapter();
             gv.adap.UpdateCommand = new OleDbCommand(gv.sql, gv.conn);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@partyname", tb1.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@address", tb2.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@address1", tb3.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@station", tb4.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@phone1", tb5.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@phone2", tb6.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@phone3", tb7.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@phone4", tb8.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@phone5", tb9.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@phone6", tb10.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@email", tb11.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@email1", tb12.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@email2", tb13.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@contactperson", tb14.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@designation", tb15.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@stcstno", tb16.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@vatnumber", tb17.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@gstnumber", tb18.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@dlno20b", tb19.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@dlno21b", tb20.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@statecode", tb21.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@id", Num);
             gv.adap.UpdateCommand.ExecuteNonQuery();
         }
         catch (Exception ex)
@@ -313,39 +307,38 @@ public class party:Form
         {
             gv.conn.Close();
         }
-        recstartstop();
-        tbnum.Text = num + " of " + reccount;
-        fillform();
     }
-
-    void insclick(object sender, EventArgs e)
+    void insert()
     {
-        recstartstop();
-        num = reccount;
-        num++;
+        selectid();
         try
         {
             gv.conn.Open();
-            gv.ds = new DataSet();
-            gv.sql = "select id as [ID] from party where partyname = '" + tb1.Text + "'";
+            gv.sql = "insert into party (id,partyname,address) values(@id,@partyname,@address)";
             Debug.WriteLine(gv.sql);
-            gv.adap = new OleDbDataAdapter(gv.sql, gv.conn);
-            gv.adap.Fill(gv.ds, "id");
-            if (gv.ds.Tables[0].Rows.Count > 0)
-            {
-                int id = 0;
-                if (gv.ds.Tables[0].Rows[0]["ID"].GetType() != typeof(DBNull))
-                    id = Convert.ToInt32(gv.ds.Tables[0].Rows[0]["ID"]);
-                if (id != 0)
-                {
-                    num = id;
-                    MessageBox.Show("Cannot create party with same name");
-                }
-            }
-            gv.sql = "insert into party (id,partyname) values(" + num + ",'" + tb1.Text + "')";
-            Debug.WriteLine(gv.sql);
-            gv.adap = new OleDbDataAdapter();
             gv.adap.InsertCommand = new OleDbCommand(gv.sql, gv.conn);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@id", Num);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@partyname", tb1.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@address", tb2.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@address1", tb3.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@station", tb4.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@phone1", tb5.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@phone2", tb6.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@phone3", tb7.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@phone4", tb8.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@phone5", tb9.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@phone6", tb10.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@email", tb11.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@email1", tb12.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@email2", tb13.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@contactperson", tb14.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@designation", tb15.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@stcstno", tb16.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@vatnumber", tb17.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@gstnumber", tb18.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@dlno20b", tb19.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@dlno21b", tb20.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@statecode", tb21.Text);
             gv.adap.InsertCommand.ExecuteNonQuery();
         }
         catch (Exception ex)
@@ -357,61 +350,8 @@ public class party:Form
         {
             gv.conn.Close();
         }
-        recstartstop();
-        num = reccount;
-        tbnum.Text = num + " of " + reccount;
-        fillform();
     }
-    void firclick(object sender , EventArgs e)
-	{
-		recstartstop();
-		num = recstart;
-		tbnum.Text = num + " of " + reccount;
-		fillform();
-	}
-	
-	void preclick(object sender , EventArgs e)
-	{
-		recstartstop();
-		num--;
-		if (num<recstart)
-		{
-			num=reccount;
-		}
-		tbnum.Text = num + " of " + reccount;
-		fillform();
-	}
-	
-	void nexclick(object sender , EventArgs e)
-	{
-		recstartstop();
-		num ++;
-		if(num>reccount)
-		{
-			num=recstart;
-		}
-		tbnum.Text = num + " of " + reccount;
-		fillform();		
-	}
-	
-	void lasclick(object sender , EventArgs e)
-	{
-		recstartstop();
-		num = reccount;
-		tbnum.Text = num + " of " + reccount;
-		fillform();
-	}
-	
-	void newclick(object sender , EventArgs e)
-	{		
-		recstartstop();
-		num = reccount;
-		num++;
-		tbnum.Text = num + " of " + reccount;
-		fillform();
-	}
-	
-
+    
 	void impclick(object sender , EventArgs e)
 	{
 		try

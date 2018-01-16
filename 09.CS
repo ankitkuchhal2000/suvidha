@@ -146,7 +146,7 @@ public class Client:Form
         btn3 = new Button { Text = "DELETE", Location = new Point(260, 1050), Parent = this };
         btn3.Click += new EventHandler(delclick);
 
-        btn4 = new Button { Text = "Report", Location = new Point(260, 1080), Parent = this };
+        btn4 = new Button { Text = "PRINT", Location = new Point(260, 1080), Parent = this };
         btn4.Click += new EventHandler(repclick);
 
         sp1 = new StatusBarPanel { AutoSize = StatusBarPanelAutoSize.Spring, Text = gv.listfile };

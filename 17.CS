@@ -196,6 +196,11 @@ class viewer : Form
             frm = new user(gv.mode.newentry, 0) { MdiParent = MdiParent };
             frm.Show();
         }
+        if (FormToOpen == gv.frmtoopen.party)
+        {
+            frm = new party(gv.mode.newentry, 0) { MdiParent = MdiParent };
+            frm.Show();
+        }
     }
     void modify()
     {
@@ -208,7 +213,16 @@ class viewer : Form
                 frm.Show();
             }
         }
-        
+        if (FormToOpen == gv.frmtoopen.party)
+        {
+            if (dgv.SelectedRows[0].Cells["id"].Value != null)
+            {
+                int.TryParse(dgv.SelectedRows[0].Cells["id"].Value.ToString(), out int result);
+                frm = new party(gv.mode.modify, result) { MdiParent = MdiParent };
+                frm.Show();
+            }
+        }
+
 
     }
     void delete()
@@ -222,7 +236,15 @@ class viewer : Form
                 frm.Show();
             }
         }
-        
+        if (FormToOpen == gv.frmtoopen.party)
+        {
+            if (dgv.SelectedRows[0].Cells["id"].Value != null)
+            {
+                int.TryParse(dgv.SelectedRows[0].Cells["id"].Value.ToString(), out int result);
+                frm = new party(gv.mode.delete, result) { MdiParent = MdiParent };
+                frm.Show();
+            }
+        }
     }
     void import()
     {
