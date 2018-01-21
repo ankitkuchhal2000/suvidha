@@ -6,16 +6,16 @@ using System.Data.OleDb;
 using System.Diagnostics;
 using System.ComponentModel;
 
-public class party:Form
+public class party : Form
 {
-	ProgressBar pbr;	
-	BackgroundWorker bkw;
+    ProgressBar pbr;
+    BackgroundWorker bkw;
 
     Label lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8, lbl9, lbl10,
-        lbl11, lbl12, lbl13, lbl14, lbl15, lbl16, lbl17, lbl18, lbl19, lbl20,lbl21, lblpercent, lblprogress;
+        lbl11, lbl12, lbl13, lbl14, lbl15, lbl16, lbl17, lbl18, lbl19, lbl20, lbl21, lbl22, lblpercent, lblprogress;
 
     TextBox tb1, tb2, tb3, tb4, tb5, tb6, tb7, tb8, tb9, tb10,
-        tb11, tb12, tb13, tb14, tb15, tb16, tb17, tb18, tb19, tb20, tb21;
+        tb11, tb12, tb13, tb14, tb15, tb16, tb17, tb18, tb19, tb20, tb21, tb22;
 
     Button btn1, btn2;
 
@@ -36,7 +36,10 @@ public class party:Form
     {
         get; set;
     }
-    int groupnumber;
+    int groupnumber
+    {
+        get;set;
+    }
     public party(gv.mode md, int num)
 	{
         Num = num;
@@ -109,7 +112,10 @@ public class party:Form
 
         lbl21 = new Label { Text = "State Code", Location = new Point(0, 570), Parent = this };
         tb21 = new TextBox { Location = new Point(100, 570), Width = 300, Parent = this };
-        
+
+        lbl22 = new Label { Text = "Group Code", Location = new Point(0, 600), Parent = this };
+        tb22 = new TextBox { Location = new Point(100, 600), Width = 300, Parent = this };
+
         pbr = new ProgressBar{ Visible = false, Location = new Point(0, 720), Width = 475, Parent = this };
 
         lblpercent = new Label{ Location = new Point(200, 750), Parent = this };
@@ -180,9 +186,10 @@ public class party:Form
                 "dlno20b as[DLNO20B] ,dlno21b as [DLNO21B], " +
                 "statecode as[State Code] " +
                 "from party " +
-                "where party.id = " + Num;
+                "where party.id = @id";
             Debug.WriteLine(gv.sql);
-            gv.adap = new OleDbDataAdapter(gv.sql, gv.conn);
+            gv.adap.SelectCommand = new OleDbCommand(gv.sql, gv.conn);
+            gv.adap.SelectCommand.Parameters.AddWithValue("@id", Num);
             gv.adap.Fill(gv.ds, "party");
 
             if (gv.ds.Tables[0].Rows.Count > 0)
@@ -227,7 +234,7 @@ public class party:Form
             gv.ds = new DataSet();
             gv.sql = "select Max(id) as [Max],Min(id) as [Min] from party";
             Debug.WriteLine(gv.sql);
-            gv.adap = new OleDbDataAdapter(gv.sql, gv.conn);
+            gv.adap.SelectCommand = new OleDbCommand(gv.sql, gv.conn);
             gv.adap.Fill(gv.ds, "id");
             if (gv.ds.Tables[0].Rows.Count > 0)
             {
@@ -339,6 +346,7 @@ public class party:Form
             gv.adap.InsertCommand.Parameters.AddWithValue("@dlno20b", tb19.Text);
             gv.adap.InsertCommand.Parameters.AddWithValue("@dlno21b", tb20.Text);
             gv.adap.InsertCommand.Parameters.AddWithValue("@statecode", tb21.Text);
+            gv.adap.InsertCommand.Parameters.AddWithValue("@groupcode", groupnumber);
             gv.adap.InsertCommand.ExecuteNonQuery();
         }
         catch (Exception ex)

@@ -14,17 +14,16 @@ public class gv //global variable class
 {
 	public static OleDbConnection conn = null;
 	public static OleDbDataAdapter adap = null;
-	public static OleDbCommand cmd = null;
     public static OleDbTransaction trans = null;
 	public static DataSet ds;
 	public static bool loginsuc = false, authcopy = false;
     public static string sql = "", connstr = "", mdbfile = "", mdwfile = "", listfile = "", inifile = "",key = "NEWTON56";
 	public static string cipher ="", companyname = "Demo Company";
 	public static int billid = 0;
-	public static DateTime yearstartdate = DateTime.Now, yearenddate = DateTime.Now;
-    public enum frmtoopen { lotlist, milling, user, item, batch, invoice,party };
+	public static DateTime yearstartdate = DateTime.Now, yearenddate = DateTime.Now,workingdate = DateTime.Now;
+    public enum frmtoopen { lotlist, milling, user, item, batch, invoice,party,voucher };
     public enum mode { view, newentry,modify, delete,import,deleterange };
-
+    public enum vouchertype { CASH_RECEIPT,CASH_PAYMENT,BANK_DEPOSIT,BANK_WITHDRAW,journal,unassigned};
     public static ResourceManager resman;
 	public static CultureInfo cul;        
 	public static string AccessDateTime(object dgvValue)

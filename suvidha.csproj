@@ -105,29 +105,30 @@
     <Compile Include="17.CS">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="19.CS">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="37.cs" />
-    <Compile Include="23.CS">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="28.CS">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="20.CS">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="20.CS" />
     <Compile Include="21.CS">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="22.CS">
+    <Compile Include="37.cs" />
+    <Compile Include="38.CS">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="24.CS">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="25.CS">
+    <Compile Include="39.CS">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="22.CS">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="40.CS">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="23.CS">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="28.CS">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="26.CS">
@@ -136,7 +137,7 @@
     <Compile Include="27.CS">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="29.CS">
+    <Compile Include="25.CS">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="18.CS">
@@ -155,6 +156,9 @@
     </Compile>
     <Compile Include="35.cs" />
     <Compile Include="36.CS" />
+    <Compile Include="19.CS">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

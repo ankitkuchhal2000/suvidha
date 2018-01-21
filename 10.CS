@@ -69,9 +69,11 @@ public class registration:Form
         {
             gv.cipher = tb1.Text;
             gv.conn.Open();
-            gv.sql = "Update Bill set cipher = '" + tb1.Text + "' where id = " + gv.billid;
+            gv.sql = "Update Bill set cipher = @cipher where id = @id";
             Debug.WriteLine(gv.sql);
             gv.adap.UpdateCommand = new OleDbCommand(gv.sql, gv.conn);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@cipher", tb1.Text);
+            gv.adap.UpdateCommand.Parameters.AddWithValue("@id", gv.billid);
             gv.adap.UpdateCommand.ExecuteNonQuery();
 
         }

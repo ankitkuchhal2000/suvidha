@@ -98,9 +98,10 @@ public class login:Form
 		{
             gv.ds = new DataSet();
             gv.conn.Open();
-			gv.sql = "select count(id) as[counter], pass as [Password] from users where username='"+tb1.Text+"' group by pass";
+			gv.sql = "select count(id) as[counter], pass as [Password] from users where username=@username group by pass";
 			Debug.WriteLine(gv.sql);
 			gv.adap.SelectCommand = new OleDbCommand(gv.sql,gv.conn);
+            gv.adap.SelectCommand.Parameters.AddWithValue("@username", tb1.Text);
 			gv.adap.Fill(gv.ds,"password");
 			if(gv.ds.Tables[0].Rows.Count>0)
 			{

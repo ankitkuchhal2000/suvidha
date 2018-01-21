@@ -40,15 +40,18 @@ public class baseform:Form
         MenuItem mi4 = new MenuItem { Text = "&MISCELLANOUS" };
         MenuItem mi5 = new MenuItem { Text = "&HELP" };
 
-        MenuItem midb = new MenuItem { Text = "&DATABASE" };
-        midb.MenuItems.Add(new MenuItem("&BACKUP",new EventHandler(backup)));
-        midb.MenuItems.Add(new MenuItem("&COMPACT AND REPAIR",new EventHandler(compactrepair)));
-        midb.MenuItems.Add(new MenuItem("CHECK &STRUCTURE", new EventHandler(checkstructure)));
+        mi1.MenuItems.Add(new MenuItem("&VOUCHERS",new EventHandler(vouchers)));
 
         mi3.MenuItems.Add(new MenuItem("&PARTY", new EventHandler(partysetup)));
         mi3.MenuItems.Add(new MenuItem ("&USER", new EventHandler(usersetup)));
 		mi3.MenuItems.Add(new MenuItem ("&CLIENT" , new EventHandler(clientsetup)));
-		mi3.MenuItems.Add(midb);
+
+        MenuItem midb = new MenuItem { Text = "&DATABASE" };
+        midb.MenuItems.Add(new MenuItem("&BACKUP", new EventHandler(backup)));
+        midb.MenuItems.Add(new MenuItem("&COMPACT AND REPAIR", new EventHandler(compactrepair)));
+        midb.MenuItems.Add(new MenuItem("CHECK &STRUCTURE", new EventHandler(checkstructure)));
+        mi3.MenuItems.Add(midb);
+
         mi5.MenuItems.Add(new MenuItem("&ABOUT", new EventHandler(about),Shortcut.F1));
 
         mm.MenuItems.Add(mi1);
@@ -58,7 +61,11 @@ public class baseform:Form
         mm.MenuItems.Add(mi5);
 
 	}
-
+    void vouchers(object sender,EventArgs e)
+    {
+        viewer frm = new viewer(gv.frmtoopen.voucher) { MdiParent = this };
+        frm.Show();
+    }
     void partysetup(object sender,EventArgs e)
     {
         viewer frm = new viewer(gv.frmtoopen.party) { MdiParent = this };

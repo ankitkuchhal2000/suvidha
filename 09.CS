@@ -428,9 +428,10 @@ public class Client:Form
         try
         {
             gv.conn.Open();
-            gv.sql = "delete from  bill where  id = " + Num;
+            gv.sql = "delete from  bill where  id = @id";
             Debug.WriteLine(gv.sql);
             gv.adap.DeleteCommand = new OleDbCommand(gv.sql, gv.conn);
+            gv.adap.DeleteCommand.Parameters.AddWithValue("@id", Num);
             gv.adap.DeleteCommand.ExecuteNonQuery();
         }
         catch (Exception ex)

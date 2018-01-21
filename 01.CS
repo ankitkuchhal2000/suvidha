@@ -259,7 +259,7 @@ public class createdb
 	List<relation> relations;
 	List<table> tables;
     List<index> indexes;
-	void structure()
+    void structure()
 
     {
         List<field> colfield = new List<field>
@@ -333,7 +333,17 @@ public class createdb
             new field{Name="groupid",Type="Number"}
         };
         tables.Add(new table { Name = "party", Fields = colfield });
-
+        colfield = new List<field>
+        {
+            new field{Name="vouchno", Type = "Number"},
+            new field{Name="vt", Type = "Text",Size = "100"},
+            new field{Name="vouchdate", Type = "DateTime"},
+            new field{Name="partyid", Type = "Number"},
+            new field{Name="narration", Type = "Text", Size="100"},
+            new field{Name="amount", Type = "Number"},
+            new field{Name="drcr", Type = "Text",Size= "2"}
+        };
+        tables.Add(new table { Name = "jour", Fields = colfield });
         colfield = new List<field>
         {
             new field{Name="id", Type= "Number", IsPrimary= true, IsUnique=true },
@@ -443,12 +453,12 @@ public class createdb
         colfield = new List<field>
         {
             new field{ Name= "claimid", Type= "Number" },
-            new field{ Name="itemid", Type= "Number" },
-            new field{ Name=  "quantity", Type= "Number" },
-            new field{ Name="rate", Type= "Number" },
-            new field{ Name="billnumber",  Type="Text", Size= "100" },
-            new field{ Name="billdate",  Type="DateTime" },
-            new field{ Name="prescriptiondate",  Type="DateTime" }
+            new field{ Name= "itemid", Type= "Number" },
+            new field{ Name= "quantity", Type= "Number" },
+            new field{ Name= "rate", Type= "Number" },
+            new field{ Name= "billnumber",  Type="Text", Size= "100" },
+            new field{ Name= "billdate",  Type="DateTime" },
+            new field{ Name= "prescriptiondate",  Type="DateTime" }
         };
         tables.Add(new table { Name = "claimdata", Fields = colfield });
 
@@ -491,7 +501,8 @@ public class createdb
         };
         tables.Add(new table { Name = "rojnamcha", Fields = colfield });
 
-        indexes.Add(new index { Name = "ITEMBIDX", Table = "itemb ", Field="(id,itemid)", WithPrimary = true });
+        indexes.Add(new index { Name = "ITEMBIDX", Table = "itemb ", Field = "(id,itemid)", WithPrimary = true });
+        indexes.Add(new index { Name = "VOUCHIDX", Table = "jour ", Field="(vouchno,vt,vouchdate)", WithPrimary = true });
 
         relations.Add(new relation { Name = "fkbillnumbillid", Table = "billnum", ForeignKey = "billid", ReferenceTable = "bill", ReferenceKey = "id" });
         relations.Add(new relation { Name = "fkinvoicebillbookid", Table = "invoice", ForeignKey = "billbookid", ReferenceTable = "billnum", ReferenceKey = "id" });
@@ -503,7 +514,7 @@ public class createdb
 
         relations.Add(new relation { Name = "fkpurchasebatchiditemid", Table = "purchase", ForeignKey = "batchid,itemid", ReferenceTable = "itemb", ReferenceKey = "id,itemid" });
         relations.Add(new relation { Name = "fkpurchasepurac", Table = "purchase", ForeignKey = "purac", ReferenceTable = "spacc", ReferenceKey = "id" });
-        //      relations.Add(new relation { Name = "fkpurchaseinvoiceid", Table = "purchase", ForeignKey = "invoiceid", ReferenceTable = "invoice", ReferenceKey = "id" });
+        relations.Add(new relation { Name = "fkpurchaseinvoiceid", Table = "purchase", ForeignKey = "invoiceid", ReferenceTable = "pbill", ReferenceKey = "id" });
 
         relations.Add(new relation { Name = "fkitembitemid", Table = "itemb", ForeignKey = "itemid", ReferenceTable = "item", ReferenceKey = "id" });
 
@@ -515,6 +526,7 @@ public class createdb
     }
     public void create()
 	{
+        OleDbCommand cmd;
         Form frm = new Form();
         lb = new ListBox { Parent = frm, Width = 500, Height = 270 };
         frm.Show();
@@ -570,8 +582,8 @@ public class createdb
                         gv.sql += " Unique";
                     }
                     gv.sql += ")";
-					gv.cmd = new OleDbCommand(gv.sql,gv.conn);
-					gv.cmd.ExecuteNonQuery();
+					cmd = new OleDbCommand(gv.sql,gv.conn);
+					cmd.ExecuteNonQuery();
 					lb.Items.Add(gv.sql);
 				}
 				gv.sql="select * from "+t.Name;
@@ -599,8 +611,8 @@ public class createdb
 							{
 								gv.sql += " DEFAULT "+f.DefaultValue;
 							}
-							gv.cmd = new OleDbCommand(gv.sql,gv.conn);
-							gv.cmd.ExecuteNonQuery();
+							cmd = new OleDbCommand(gv.sql,gv.conn);
+							cmd.ExecuteNonQuery();
 							lb.Items.Add(gv.sql);
 						}
 					}
@@ -628,8 +640,8 @@ public class createdb
                     {
                         gv.sql += " WITH PRIMARY";
                     }
-                    gv.cmd = new OleDbCommand(gv.sql, gv.conn);
-                    gv.cmd.ExecuteNonQuery();
+                    cmd = new OleDbCommand(gv.sql, gv.conn);
+                    cmd.ExecuteNonQuery();
                     lb.Items.Add(gv.sql);
                 }
             }
@@ -637,8 +649,8 @@ public class createdb
             
 
             gv.sql = "grant select on msysrelationships to Admin";
-			gv.cmd = new OleDbCommand(gv.sql,gv.conn);
-			gv.cmd.ExecuteNonQuery();
+			cmd = new OleDbCommand(gv.sql,gv.conn);
+			cmd.ExecuteNonQuery();
 			lb.Items.Add(gv.sql);
 			foreach(relation r in relations)
 			{
@@ -657,14 +669,14 @@ public class createdb
 				{
 					gv.sql = "Alter Table "+ r.Table +" ADD CONSTRAINT "+r.Name+" FOREIGN KEY ("+r.ForeignKey+") REFERENCES "+r.ReferenceTable +"("+r.ReferenceKey+")";
 					//+" ON UPDATE SET NULL ON DELETE SET NULL";
-					gv.cmd = new OleDbCommand(gv.sql,gv.conn);
-					gv.cmd.ExecuteNonQuery();
+					cmd = new OleDbCommand(gv.sql,gv.conn);
+					cmd.ExecuteNonQuery();
 					lb.Items.Add(gv.sql);
 				}
 			}
 			gv.sql = "Revoke select on msysrelationships from Admin";
-			gv.cmd = new OleDbCommand(gv.sql,gv.conn);
-			gv.cmd.ExecuteNonQuery();
+			cmd = new OleDbCommand(gv.sql,gv.conn);
+			cmd.ExecuteNonQuery();
 			lb.Items.Add(gv.sql);
 		}
 		catch(Exception ex)

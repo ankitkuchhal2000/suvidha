@@ -88,9 +88,10 @@ public class user:Form
         {
             gv.conn.Open();
             gv.ds = new DataSet();
-            gv.sql = "select username,pass from  users where  users.id = " + Num;
+            gv.sql = "select username,pass from  users where  users.id = @id";
             Debug.WriteLine(gv.sql);
             gv.adap.SelectCommand = new OleDbCommand(gv.sql, gv.conn);
+            gv.adap.SelectCommand.Parameters.AddWithValue("@id", Num);
             gv.adap.Fill(gv.ds, "users");
             if (gv.ds.Tables[0].Rows.Count > 0)
             {

@@ -17,14 +17,6 @@ public class batch:Form
 	
 	Label lbl1;
 	Label lbl2;
-	Label lbl3;
-	Label lbl4;
-	Label lbl5;
-	Label lbl6;
-	Label lbl7;
-	Label lbl8;
-	Label lbl9;
-	Label lbl10;
 	
 	TextBox tb1;
 	TextBox tb2;
@@ -42,15 +34,6 @@ public class batch:Form
 	
 	//DataGridView dgv;
 	
-	Button btn1;
-	Button btn2;
-	Button btn3;
-	Button btn4;
-	Button btn5;
-	Button btn6;
-	Button btn7;
-	Button btn8;
-	Button btn9;
 	
 	public batch(int icode)
 	{

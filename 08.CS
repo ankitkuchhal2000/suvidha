@@ -127,9 +127,10 @@ public class Companylist:Form
 		{
 			Debug.WriteLine(gv.connstr);
 			gv.conn.Open();
-			gv.sql= "delete from list where id = "+dgv.SelectedRows[0].Cells["id"].Value;
+			gv.sql= "delete from list where id = @id";
 			Debug.WriteLine(gv.sql);
             gv.adap.DeleteCommand = new OleDbCommand(gv.sql, gv.conn);
+            gv.adap.DeleteCommand.Parameters.AddWithValue("@id", dgv.SelectedRows[0].Cells["id"].Value);
             gv.adap.DeleteCommand.ExecuteNonQuery();			
 		}
 		catch (Exception ex)
@@ -163,9 +164,11 @@ public class Companylist:Form
             {
                 Debug.WriteLine(gv.connstr);
                 gv.conn.Open();
-                gv.sql = "update list set datapath = '" + dialog.FileName + "' where id = " + dgv.SelectedRows[0].Cells["id"].Value;
+                gv.sql = "update list set datapath = @datapath where id = @id";
                 Debug.WriteLine(gv.sql);
                 gv.adap.UpdateCommand = new OleDbCommand(gv.sql, gv.conn);
+                gv.adap.UpdateCommand.Parameters.AddWithValue("@datapath", dialog.FileName);
+                gv.adap.UpdateCommand.Parameters.AddWithValue("@id", dgv.SelectedRows[0].Cells["id"].Value);
                 gv.adap.UpdateCommand.ExecuteNonQuery();
             }
             catch (Exception ex)

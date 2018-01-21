@@ -29,7 +29,7 @@ class viewer : Form
     DataGridView dgv;
     ToolStripStatusLabel ssl1,ssl2;
     StatusStrip ss;
-
+    ContextMenu cm;
     Button btn1, btn2, btn3, btn4, btn5, btn6;
 
     public viewer(gv.frmtoopen form)
@@ -68,7 +68,18 @@ class viewer : Form
 
         ss = new StatusStrip() { Parent = this };
         ss.Items.AddRange(new ToolStripItem[] { ssl1, ssl2 });
-        
+
+        MenuItem[] mi = new MenuItem[] {
+            new MenuItem("CASH RECEIPT", new EventHandler (addnewcashreceipt)),
+            new MenuItem("CASH PAYMENT", new EventHandler(addnewcashpayment)),
+            new MenuItem("BANK DEPOSIT",new EventHandler(addnewbankdeposit)),
+            new MenuItem("BANK WITHDRAW",new EventHandler(addnewbakwithdraw)),
+            new MenuItem("JOURNAL VOUCHER",new EventHandler(addnewjournalvoucher)),
+            new MenuItem("SALE VOUCHER"),
+            new MenuItem("PURCHASE VOUCHER")
+
+        };
+        cm = new ContextMenu(mi);
         refresh();
     }
     
@@ -101,7 +112,32 @@ class viewer : Form
     {
         import();
     }
-    
+    void addnewcashreceipt( object sender, EventArgs e)
+    {
+        frm = new voucher(gv.mode.newentry,0,gv.vouchertype.CASH_RECEIPT,gv.workingdate ) { MdiParent = MdiParent };
+        frm.Show();
+    }
+    void addnewcashpayment(object sender, EventArgs e)
+    {
+        frm = new voucher(gv.mode.newentry, 0, gv.vouchertype.CASH_PAYMENT, gv.workingdate) { MdiParent = MdiParent };
+        frm.Show();
+    }
+    void addnewbankdeposit(object sender, EventArgs e)
+    {
+        frm = new voucher(gv.mode.newentry, 0, gv.vouchertype.BANK_DEPOSIT, gv.workingdate) { MdiParent = MdiParent };
+        frm.Show();
+    }
+    void addnewbakwithdraw(object sender, EventArgs e)
+    {
+        frm = new voucher(gv.mode.newentry, 0, gv.vouchertype.BANK_WITHDRAW, gv.workingdate) { MdiParent = MdiParent };
+        frm.Show();
+    }
+    void addnewjournalvoucher(object sender, EventArgs e)
+    {
+        frm = new voucher(gv.mode.newentry, 0, gv.vouchertype.journal, gv.workingdate) { MdiParent = MdiParent };
+        frm.Show();
+    }
+
     void dgvkeydown(object sender, KeyEventArgs e)
     {
         if (e.Alt && (e.KeyCode == Keys.Down || e.KeyCode == Keys.Up))
@@ -151,7 +187,10 @@ class viewer : Form
         {
             gv.ds = new DataSet();
             gv.conn.Open();
-
+            if (FormToOpen == gv.frmtoopen.voucher)
+            {
+                gv.sql = "select * from jour";
+            }
             if (FormToOpen == gv.frmtoopen.user)
             {
                 gv.sql = "select * from users";
@@ -191,6 +230,10 @@ class viewer : Form
     }
     void addnew()
     {
+        if (FormToOpen == gv.frmtoopen.voucher)
+        {
+            cm.Show(this, Cursor.Position);
+        }
         if (FormToOpen == gv.frmtoopen.user)
         {
             frm = new user(gv.mode.newentry, 0) { MdiParent = MdiParent };
